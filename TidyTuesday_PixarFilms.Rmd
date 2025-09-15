@@ -2,7 +2,9 @@
 title: "TidyTuesday_Pixar_Films"
 author: "Yang Yuetong"
 date: "2025-09-14"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 Suggested questions:
@@ -10,7 +12,7 @@ Why are some values missing in the datasets?
 Which films have the highest score in each rating system? Are there distinct differences in ratings?
 Download the box_office dataset from the {pixarfilms} package. How does the box_office_us_canada value compare to the various ratings? Is the trend different for box_office_worldwide?
 
-```{r}
+```{r setup, include = FALSE}
 # Packages needed
 # Data manipulation + tidying
 library(dplyr)
