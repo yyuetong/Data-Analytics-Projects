@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from pathlib import Path
+
 
 # streamlit page config
 st.set_page_config(
@@ -13,7 +15,10 @@ st.set_page_config(
 # streamlit run dashboard_test.py
 
 # load data
-df = pd.read_csv('data/kdrama.csv')
+BASE_DIR = Path(__file__).parent
+DATA_PATH = BASE_DIR / "data" / "kdrama.csv"
+
+df = pd.read_csv(DATA_PATH)
 
 
 # add page title
