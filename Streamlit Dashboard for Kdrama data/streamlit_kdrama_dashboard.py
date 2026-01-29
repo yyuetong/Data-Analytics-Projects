@@ -31,30 +31,35 @@ with st.expander('About the Dataset'):
 st.header("Exploratory Analysis on Ratings")
 
 # 1. Add a search bar
-search_query = st.text_input("🔍 Search for a Kdrama title:", "")
+search_query = st.text_input("🔍 Search by Name, Network, or Genre:", "")
 
 # 2. Filter the dataframe based on search
 if search_query:
-    # We filter the 'Name' column
-    filtered_df = df[df['Name'].str.contains(search_query, case=False, na=False)]
+    # create filters for each column
+    # case=False makes the search insensitive (e.g., 'netflix' matches 'Netflix')
+    name_match = df['Name'].str.contains(search_query, case=False, na=False)
+    network_match = df['Original Network'].str.contains(search_query, case=False, na=False)
+    genre_match = df['Genre'].str.contains(search_query, case=False, na=False)
+    
+    # Combine them with the OR operator (|)
+    filtered_df = df[name_match | network_match | genre_match]
     
     if not filtered_df.empty:
         st.write(f"Found {len(filtered_df)} result(s):")
         
-        # 3. Show only specific columns like Name and Rank
-        st.dataframe(filtered_df[['Name', 'Rank', 'Rating']], use_container_width=True)
+        # 3. Show the relevant columns
+        display_cols = ['Name', 'Rank', 'Rating', 'Original Network', 'Genre']
+        st.dataframe(filtered_df[display_cols], use_container_width=True)
     else:
-        st.warning("No Kdrama found with that name. Try another one!")
+        st.warning(f"No result(s) found for '{search_query}'.")
 else:
-    # Show the full top 10 if the search bar is empty
-    st.caption("Showing Top 10 Kdramas:")
-    st.dataframe(df[['Name', 'Rank', 'Rating']].head(10), use_container_width=True)
+    # Default view is first 10 kdramas
+    st.caption("Showing First 10 Rows:")
+    st.dataframe(df[['Name', 'Rank', 'Rating', 'Original Network', 'Genre']].head(10), width='stretch')
 
 
-## idea:
-# create a sidebar with filtering options. nothing is selected by default but we can do 
-# groupby: people: directors, screenwriters, casts (actors) --> averange rating & no. of dramas (not clean) - done
-# global filter by: year of release - done
+
+#side bar filter:
 
 
 # --- 1. Sidebar Configuration ---
